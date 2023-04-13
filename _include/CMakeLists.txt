@@ -1,0 +1,1 @@
+target_include_directories (week03_zoo PRIVATE ${CMAKE_CURRENT_LIST_DIR})
