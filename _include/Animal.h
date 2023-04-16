@@ -19,6 +19,7 @@ public:
 	virtual void move();
 	virtual void turnVertically() = 0;
 	virtual void turnHorizontally() = 0;
+	Location getLocation() const;
 
 
 };

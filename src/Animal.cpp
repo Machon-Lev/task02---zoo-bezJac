@@ -17,3 +17,5 @@ Animal::Animal(std::string animal_name)
 
 void Animal::stop() { is_freezed = true; }
 void Animal::move() { is_freezed = false; }
+Location Animal::getLocation() const
+{ return location; }

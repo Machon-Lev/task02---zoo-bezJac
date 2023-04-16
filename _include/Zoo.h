@@ -10,7 +10,8 @@ class Zoo {
 	void delAll(char class_name);
 	void help();
 	void step();
-	
+	void printZooMap();
+	void printAnimalList();
 public:
 	void run();
 };
