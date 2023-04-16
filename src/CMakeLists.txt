@@ -1,1 +1,1 @@
-target_sources (week03_zoo PRIVATE "main.cpp" )
+target_sources (week03_zoo PRIVATE "main.cpp"								   "Lion.cpp" 								   "Animal.cpp" 								   "Monkey.cpp" 								   "Shark.cpp" 									"Zoo.cpp")
