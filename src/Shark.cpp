@@ -3,7 +3,7 @@
 #include <iostream>
 #define SHARK_STEP 5
 
-Shark::Shark(std::string animal_name) :Animal(animal_name) {
+Shark::Shark(std::string shark_name, Location shark_location) :Animal(shark_name,shark_location) {
 	generate_direction();
 }
 void Shark::printDetails() const
@@ -48,8 +48,9 @@ void Shark::step()
 		{
 			break;
 		}
-		enforceLegalBounds();
+		
 		}
+		enforceLegalBounds();
 
 	}
 }

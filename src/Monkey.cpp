@@ -3,7 +3,7 @@
 #include <random_util.h>
 #include <iostream>
 
-Monkey::Monkey(std::string animal_name) :Animal(animal_name) {
+Monkey::Monkey(std::string monkey_name, Location monkey_location) :Animal(monkey_name, monkey_location) {
 
 	generate_direction();
 	step_count = 0;
@@ -24,7 +24,10 @@ void Monkey::step()
 {
     ++step_count;
     if (step_count == 5)
+    {
         generate_direction();
+        step_count = 0;
+    }
 
     if (!is_freezed)
     {

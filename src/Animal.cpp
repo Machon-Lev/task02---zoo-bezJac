@@ -4,11 +4,11 @@
 
 
 Animal::Animal() {}
-Animal::Animal(std::string animal_name)
+Animal::Animal(std::string animal_name,Location animal_location)
 {
 	name = animal_name;
-	location.row = RandomUtil::generateRandomValue(0, 19);
-	location.column = RandomUtil::generateRandomValue(0, 39);
+	location = animal_location;
+	is_freezed = false;
 }
  void Animal::printDetails() const
 {

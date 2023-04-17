@@ -2,7 +2,7 @@
 #include <iostream>
 #include <random_util.h>
 
-Lion::Lion(std::string animal_name) :Animal(animal_name) {
+Lion::Lion(std::string lion_name, Location lion_location) :Animal(lion_name,lion_location) {
 
 	horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
 }
