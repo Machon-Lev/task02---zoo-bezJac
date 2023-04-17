@@ -14,7 +14,7 @@ class Shark :public Animal {
 	int vertical_direction;
 	int moving_direction;
 public:
-	Shark(std::string animal_name);
+	Shark(std::string shark_name,Location shark_location);
 	void printDetails() const override;
 	char getInitial() const override;
 	void move() override;

@@ -9,7 +9,7 @@ class Lion:public Animal {
 
 	int horizontal_direction;
 public:
-	Lion(std::string animal_name);
+	Lion(std::string lion_name, Location lion_location);
 	void printDetails() const override;
 	char getInitial() const override;
 	void move() override;

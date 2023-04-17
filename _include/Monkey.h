@@ -10,7 +10,7 @@ class Monkey :public Animal {
 	size_t step_count;
 	size_t step_size;
 public:
-	Monkey(std::string animal_name);
+	Monkey(std::string monkey_name, Location monkey_location);
 	void printDetails() const override;
 	char getInitial() const override;
 	void step() override;

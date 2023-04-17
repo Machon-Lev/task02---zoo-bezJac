@@ -10,8 +10,10 @@ protected:
 	Location location;
 	bool is_freezed;
 	Animal();
-	Animal(std::string animal_name);
+	Animal(std::string animal_name,Location animal_location);
+	
 public:
+	virtual ~Animal() = default;
 	virtual void printDetails() const;
 	virtual char getInitial() const = 0;
 	virtual void step() = 0;

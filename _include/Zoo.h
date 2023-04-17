@@ -12,6 +12,7 @@ class Zoo {
 	void step();
 	void printZooMap();
 	void printAnimalList();
+	static bool compareByLocation(std::unique_ptr<Animal>& a1, std::unique_ptr<Animal>& a2);
 public:
 	void run();
 };
