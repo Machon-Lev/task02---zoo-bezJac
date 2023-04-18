@@ -1,15 +1,28 @@
+/**
+ * @file random_util.h
+ * @brief Defines a utility namespace for generating random values.
+ */
+
 #ifndef RANDOM_UTIL_H
 #define RANDOM_UTIL_H
 
 #include <random>
 
 namespace RandomUtil {
+
+	/**
+	 * @brief Generates a Normal distributed random integer between a lower and upper bound (inclusive).
+	 *
+	 * @param lower_bound The lower bound of the range (inclusive).
+	 * @param upper_bound The upper bound of the range (inclusive).
+	 * @return A random integer between the lower and upper bounds.
+	 */
 	inline int generateRandomValue(int lower_bound, int upper_bound)
 	{
-		std::random_device rd; // create a random_device object to seed the random number generator
-		std::mt19937 gen(rd()); // create a Mersenne Twister engine with rd as the seed
-		std::uniform_int_distribution<int> dist(lower_bound, upper_bound); // create a uniform distribution object with range [0,1]
-		return dist(gen); // generate a random number using gen and dist, and set choice to -1 or 1 based on the result
+		std::random_device rd; 
+		std::mt19937 gen(rd()); 
+		std::uniform_int_distribution<int> dist(lower_bound, upper_bound); 
+		return dist(gen); 
 
 	}
 }
