@@ -17,30 +17,35 @@ std::vector<std::string> parse_command()
 	std::string line;
 	std::getline(std::cin, line);  // read a line of input from the user
 
+
 	std::istringstream iss(line);  // create an istringstream object from the line
 	std::vector<std::string> tokens;  // create a vector to hold the tokens
+	if (!line.empty()) {
 
-	// read each whitespace-separated token into the vector
-	std::string token;
-	while (iss >> token) {
-		tokens.push_back(token);
+		// read each whitespace-separated token into the vector
+		std::string token;
+		while (iss >> token) {
+			tokens.push_back(token);
+		}
+
 	}
 	return tokens;
+
 }
 
-void Zoo::stop(int index)
+void Zoo::stop(const int index)
 {
 	if (index >= animals.size())
 		throw std::out_of_range("Index is out of range.\n");
 	animals[index]->stop();
 }
-void Zoo::move(int index)
+void Zoo::move(const int index)
 {
 	if (index >= animals.size())
 		throw std::out_of_range("Index is out of range.\n");
 	animals[index]->move();
 }
-void Zoo::create(std::string animal_type, std::string animal_name)
+void Zoo::create(const std::string animal_type, const std::string animal_name)
 {
 	if (animal_type != "Lion" && animal_type != "Monkey" && animal_type != "Shark")
 		throw std::invalid_argument("Animal type must be either Lion, Monkey, or Shark.\n");
@@ -53,12 +58,12 @@ void Zoo::create(std::string animal_type, std::string animal_name)
 		animals.emplace_back(std::make_unique<Shark>(animal_name, l));
 
 }
-void Zoo::del(int index) {
+void Zoo::del(const int index) {
 	if (index >= animals.size())
 		throw std::out_of_range("Index is out of range.\n");
 	animals.erase(animals.begin() + index);
 }
-void Zoo::delAll(char class_name) {
+void Zoo::delAll(const char class_name) {
 	if (class_name != 'L' && class_name != 'M' && class_name != 'S')
 		throw std::invalid_argument("Class type must be either L -> Lion, M -> Monkey, or S -> Shark.\n");
 	animals.erase(std::remove_if(animals.begin(), animals.end(), [class_name](const std::unique_ptr<Animal>& elem) { return elem->getInitial() == class_name; }), animals.end());
@@ -133,14 +138,11 @@ void Zoo::printAnimalList()
 		std::cout << std::endl;
 	}
 }
-bool Zoo::compareByLocation(std::unique_ptr<Animal>& a1, std::unique_ptr<Animal>& a2)
+bool Zoo::compareByLocation(const std::unique_ptr<Animal>& a1, const std::unique_ptr<Animal>& a2)
 {
 	Location l1 = a1->getLocation();
 	Location l2 = a2->getLocation();
-	if (l1.row != l2.row)
-		return l1.row < l2.row;
-	else
-		return l1.column < l2.column;
+	return l1 < l2;
 }
 
 void Zoo::run() {
@@ -148,7 +150,7 @@ void Zoo::run() {
 	std::vector<std::string> commands_list = { "stop","move","create","del","delAll",".","help","exit" };
 	bool game_runing = true;
 	bool no_error = true;
-	std::vector<std::string> full_command;
+	std::vector<std::string> command_and_args;
 	std::string command;
 	char command_type;
 	int index;
@@ -167,20 +169,22 @@ void Zoo::run() {
 			printAnimalList();
 			printZooMap();
 		}
+		command = "";
 		std::cout << "Enter your command:\n";
-		full_command = parse_command();
-		command = full_command[0];
-		if ((std::find(commands_list.begin(), commands_list.end(), command) != commands_list.end()))
+		command_and_args = parse_command();
+		if (!command_and_args.empty())
+			command = command_and_args[0];
+		if (command != "" && (std::find(commands_list.begin(), commands_list.end(), command) != commands_list.end()))
 		{
 			no_error = true;
-			command_type = full_command[0][0];
+			command_type = command[0];
 			switch (command_type)
 			{
 			case 's': {
 
 				try
 				{
-					index = std::stoi(full_command[1]) - 1;
+					index = std::stoi(command_and_args[1]) - 1;
 					stop(index);
 				}
 				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
@@ -190,19 +194,19 @@ void Zoo::run() {
 			{
 				try
 				{
-					index = std::stoi(full_command[1]) - 1;
+					index = std::stoi(command_and_args[1]) - 1;
 					move(index);
 				}
-				catch (const std::exception& e) { std::cout << e.what(); no_error = false;}
+				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
 				break;
 			}
 			case 'c':
 			{
 				try
 				{
-					create(full_command[1], full_command[2]);
+					create(command_and_args[1], command_and_args[2]);
 				}
-				catch (const std::exception& e) { std::cout << e.what(); no_error = false;}
+				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
 				break;
 			}
 			case 'd':
@@ -212,14 +216,14 @@ void Zoo::run() {
 				{
 					if (command.size() < 4)
 					{
-						index = std::stoi(full_command[1]) - 1;
+						index = std::stoi(command_and_args[1]) - 1;
 						del(index);
 					}
 					else
-						delAll(full_command[1].at(0));
+						delAll(command_and_args[1].at(0));
 
 				}
-				catch (const std::exception& e) { std::cout << e.what(); no_error = false;}
+				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
 				break;
 
 			}

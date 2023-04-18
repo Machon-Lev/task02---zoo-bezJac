@@ -18,6 +18,11 @@ char Monkey::getInitial() const
 	return 'M';
 }
 
+void Monkey::move()
+{
+    if (is_freezed)
+        Animal::move();
+}
 
 
 void Monkey::step()

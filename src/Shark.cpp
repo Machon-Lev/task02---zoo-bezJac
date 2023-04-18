@@ -18,8 +18,11 @@ char Shark::getInitial() const
 
 void Shark::move()
 {
-	Animal::move();
-	generate_direction();
+	if (is_freezed)
+	{
+		Animal::move();
+		generate_direction();
+	}
 }
 
 void Shark::step()

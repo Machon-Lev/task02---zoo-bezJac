@@ -17,8 +17,11 @@ char Lion::getInitial() const
 }
 
 void Lion::move() {
-	Animal::move();
-	horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
+	if (is_freezed)
+	{
+		Animal::move();
+		horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
+	}
 }
 void Lion::step()
 {
