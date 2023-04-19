@@ -1,7 +1,12 @@
 #include "Shark.h"
 #include <random_util.h>
 #include <iostream>
+
 #define SHARK_STEP 5
+#define LOWER__ROW_BOUND 0
+#define UPPER__ROW_BOUND 19
+#define LOWER__COLUMN_BOUND 0
+#define UPPER__COLUMN_BOUND 39
 
 Shark::Shark(std::string shark_name, Location shark_location) :Animal(shark_name,shark_location) {
 	generate_direction();
@@ -73,12 +78,15 @@ void Shark::step()
 
 	void Shark::enforceLegalBounds()
 	{
-		if (location.row < 0)
-			location.row = 0;
-		if (location.row > 19)
-			location.row = 19;
-		if (location.column < 0)
-			location.column = 0;
-		if (location.column > 39)
-			location.column = 39;
+		if (location.row < LOWER__ROW_BOUND)
+			location.row = LOWER__ROW_BOUND;
+
+		if (location.row > UPPER__ROW_BOUND)
+			location.row = UPPER__ROW_BOUND;
+
+		if (location.column < LOWER__COLUMN_BOUND)
+			location.column = LOWER__COLUMN_BOUND;
+
+		if (location.column > UPPER__COLUMN_BOUND)
+			location.column = UPPER__COLUMN_BOUND;
 	}

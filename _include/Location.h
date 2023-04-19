@@ -2,6 +2,12 @@
 #define LOCATION_H
 
 #include <ostream>
+
+/**
+ A struct representing a location in two-dimensional board.
+ The location can be added to or incremented with another location,
+ and can be compared to other locations for equality or relative ordering.
+ */
 struct Location
 {
 	int row;

@@ -27,9 +27,9 @@ void Lion::step()
 {
 	if (!is_freezed)
 	{
-		if (location.column < 2 || location.column >37)
+		if (location.column < 2 || location.column >37)		// lion reached horizontal border of the board - switch directions
 			turnHorizontally();
-		if (location.column != 1 || location.column != 38)
+		if (location.column != 1 || location.column != 38)	// when lion is in (*,1) or (*,38) next move will return it to the same spot
 			location += {0, 2 * horizontal_direction};
 			
 	}

@@ -12,14 +12,18 @@
 #define MAP_ROWS 20
 #define MAP_COLUMNS 40
 
+/**
+* @brief parses the command and arguments from the CLI.
+* @return std::vector<std::string> containing splited command and arguments.
+**/
 std::vector<std::string> parse_command()
 {
 	std::string line;
-	std::getline(std::cin, line);  // read a line of input from the user
+	std::getline(std::cin, line);  
 
 
 	std::istringstream iss(line);  // create an istringstream object from the line
-	std::vector<std::string> tokens;  // create a vector to hold the tokens
+	std::vector<std::string> tokens;  
 	if (!line.empty()) {
 
 		// read each whitespace-separated token into the vector
@@ -98,6 +102,7 @@ void Zoo::printZooMap()
 	}
 	std::cout << "+" << std::endl;
 
+	// print the animals
 	for (int i = 0; i < MAP_ROWS; i++)
 	{
 		std::cout << "|"; // Start each row with a vertical bar
@@ -109,6 +114,8 @@ void Zoo::printZooMap()
 			if (animals_index < animals_size && animals[animals_index]->getLocation() == tmp)
 			{
 				std::cout << animals[animals_index]->getInitial();
+
+				// print only one animal per location, if other animals have same location skip them.
 				while (animals_index < animals_size && animals[animals_index]->getLocation() == tmp)
 					++animals_index;
 			}
@@ -164,7 +171,7 @@ void Zoo::run() {
 
 	while (game_runing)
 	{
-		if (no_error)
+		if (no_error) // print map and list only for valid commands
 		{
 			printAnimalList();
 			printZooMap();
@@ -172,15 +179,17 @@ void Zoo::run() {
 		command = "";
 		std::cout << "Enter your command:\n";
 		command_and_args = parse_command();
-		if (!command_and_args.empty())
+		if (!command_and_args.empty())		// ensure user typed some command
 			command = command_and_args[0];
+
+		// if command is legal, execute the matching function.
 		if (command != "" && (std::find(commands_list.begin(), commands_list.end(), command) != commands_list.end()))
 		{
 			no_error = true;
 			command_type = command[0];
 			switch (command_type)
 			{
-			case 's': {
+			case 's': {		//stop
 
 				try
 				{
@@ -190,7 +199,7 @@ void Zoo::run() {
 				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
 				break;
 			}
-			case 'm':
+			case 'm':		//move
 			{
 				try
 				{
@@ -200,7 +209,7 @@ void Zoo::run() {
 				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
 				break;
 			}
-			case 'c':
+			case 'c':		//create
 			{
 				try
 				{
@@ -209,7 +218,7 @@ void Zoo::run() {
 				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
 				break;
 			}
-			case 'd':
+			case 'd': // del, delAll
 			{
 
 				try
@@ -227,18 +236,18 @@ void Zoo::run() {
 				break;
 
 			}
-			case 'h':
+			case 'h':		//help
 			{
 				help();
 				break;
 			}
-			case '.':
+			case '.':		//step
 			{
 				step();
 				break;
 			}
 
-			case 'e':
+			case 'e':		//exit
 			{
 				game_runing = false;
 				break;
@@ -246,6 +255,7 @@ void Zoo::run() {
 
 			}
 		}
+		//command is not valid
 		else
 		{
 			std::cout << "Please use valid commands only!\nFor list of valid commands type 'help'\n";
