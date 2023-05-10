@@ -8,7 +8,7 @@
  */
 class Zoo {
 private:
-	std::vector<std::unique_ptr<Animal>> animals;  // The collection of animals in the zoo.
+	std::vector<std::unique_ptr<Animal>> _animals;  // The collection of animals in the zoo.
 
 
 
@@ -61,13 +61,20 @@ private:
 	*/
 	void printAnimalList();
 
+	// ensure that all animals stay on map when moved
+	void enforceLegalBounds();
+	
 	// A static comparison function for sorting animals by location.
 	static bool compareByLocation(const std::unique_ptr<Animal>& a1, const std::unique_ptr<Animal>& a2);
 
 public:
+
+	Zoo();
+	~Zoo() = default;
 	/**
 	 * Runs the main loop of the zoo simulation, prompting the user for commands
 	 * and updating the state of the zoo based on those commands.
 	 */
 	void run();
+
 };

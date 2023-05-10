@@ -10,11 +10,11 @@
  */
 class Monkey :public Animal {
 
-	int horizontal_direction;	// The current horizontal direction of the monkey (either -1, or 1).
-	int vertical_direction;		// The current vertical direction of the monkey (either -1, or 1).
-	int moving_direction;		// The current  direction of the monkey (either 1 : vertical, or 2 : horizontal).
-	size_t step_count;			// Counter for monkey steps.
-	size_t step_size;			// Number of indexes monkey moves per step (either 1, or 2).
+	int _horizontal_direction;	// The current horizontal direction of the monkey (either -1, or 1).
+	int _vertical_direction;		// The current vertical direction of the monkey (either -1, or 1).
+	int _moving_direction;		// The current  direction of the monkey (either 1 : vertical, or 2 : horizontal).
+	size_t _step_count;			// Counter for monkey steps.
+	size_t _step_size;			// Number of indexes monkey moves per step (either 1, or 2).
 public:
 	Monkey(std::string monkey_name, Location monkey_location);
 	void printDetails() const override;

@@ -8,7 +8,7 @@ The lion moves horizontally 2 indexes per step.
  */
 class Lion:public Animal {
 
-	int horizontal_direction;  // The current horizontal direction of the lion (either -1, or 1).
+	int _horizontal_direction;  // The current horizontal direction of the lion (either -1, or 1).
 public:
 	Lion(std::string lion_name, Location lion_location);
 	void printDetails() const override;

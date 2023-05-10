@@ -4,7 +4,7 @@
 
 Lion::Lion(std::string lion_name, Location lion_location) :Animal(lion_name,lion_location) {
 
-	horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
+	_horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
 }
 void Lion::printDetails() const
 {
@@ -17,25 +17,25 @@ char Lion::getInitial() const
 }
 
 void Lion::move() {
-	if (is_freezed)
+	if (_is_freezed)
 	{
 		Animal::move();
-		horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
+		_horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
 	}
 }
 void Lion::step()
 {
-	if (!is_freezed)
+	if (!_is_freezed)
 	{
-		if (location.column < 2 || location.column >37)		// lion reached horizontal border of the board - switch directions
+		if (_location._column < 2 || _location._column >37)		// lion reached horizontal border of the board - switch directions
 			turnHorizontally();
-		if (location.column != 1 || location.column != 38)	// when lion is in (*,1) or (*,38) next move will return it to the same spot
-			location += {0, 2 * horizontal_direction};
+		if (_location._column != 1 || _location._column != 38)	// when lion is in (*,1) or (*,38) next move will return it to the same spot
+			_location += {0, 2 * _horizontal_direction};
 			
 	}
 }
 void Lion::turnVertically() {}
 void Lion::turnHorizontally()
 {
-	horizontal_direction *= -1;
+	_horizontal_direction *= -1;
 }

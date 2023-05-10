@@ -9,9 +9,20 @@
 #include <iostream>
 #include <sstream>
 
-#define MAP_ROWS 20
-#define MAP_COLUMNS 40
+const int MAP_ROWS = 20;
+const int MAP_COLUMNS = 40;
+const int ROWS_LOWER_BOUNDRY = 0;
+const int ROWS_UPPER_BOUNDRY = 19;
+const int COLS_LOWER_BOUNDRY = 0;
+const int COLS_UPPER_BOUNDRY = 39;
 
+Zoo::Zoo() {
+	create("Lion", "Simba");
+	create("Lion", "Mufasa");
+	create("Monkey", "Rafiki");
+	create("Shark", "Jaws");
+	help();
+}
 /**
 * @brief parses the command and arguments from the CLI.
 * @return std::vector<std::string> containing splited command and arguments.
@@ -19,11 +30,11 @@
 std::vector<std::string> parse_command()
 {
 	std::string line;
-	std::getline(std::cin, line);  
+	std::getline(std::cin, line);
 
 
 	std::istringstream iss(line);  // create an istringstream object from the line
-	std::vector<std::string> tokens;  
+	std::vector<std::string> tokens;
 	if (!line.empty()) {
 
 		// read each whitespace-separated token into the vector
@@ -39,38 +50,38 @@ std::vector<std::string> parse_command()
 
 void Zoo::stop(const int index)
 {
-	if (index >= animals.size())
+	if (index >= _animals.size())
 		throw std::out_of_range("Index is out of range.\n");
-	animals[index]->stop();
+	_animals[index]->stop();
 }
 void Zoo::move(const int index)
 {
-	if (index >= animals.size())
+	if (index >= _animals.size())
 		throw std::out_of_range("Index is out of range.\n");
-	animals[index]->move();
+	_animals[index]->move();
 }
 void Zoo::create(const std::string animal_type, const std::string animal_name)
 {
 	if (animal_type != "Lion" && animal_type != "Monkey" && animal_type != "Shark")
 		throw std::invalid_argument("Animal type must be either Lion, Monkey, or Shark.\n");
-	Location l = Location(RandomUtil::generateRandomValue(0, 19), RandomUtil::generateRandomValue(0, 39));
+	Location l = Location(RandomUtil::generateRandomValue(ROWS_LOWER_BOUNDRY, ROWS_UPPER_BOUNDRY), RandomUtil::generateRandomValue(COLS_LOWER_BOUNDRY, COLS_UPPER_BOUNDRY));
 	if (animal_type == "Lion")
-		animals.emplace_back(std::make_unique<Lion>(animal_name, l));
+		_animals.emplace_back(std::make_unique<Lion>(animal_name, l));
 	if (animal_type == "Monkey")
-		animals.emplace_back(std::make_unique<Monkey>(animal_name, l));
+		_animals.emplace_back(std::make_unique<Monkey>(animal_name, l));
 	if (animal_type == "Shark")
-		animals.emplace_back(std::make_unique<Shark>(animal_name, l));
+		_animals.emplace_back(std::make_unique<Shark>(animal_name, l));
 
 }
 void Zoo::del(const int index) {
-	if (index >= animals.size())
+	if (index >= _animals.size())
 		throw std::out_of_range("Index is out of range.\n");
-	animals.erase(animals.begin() + index);
+	_animals.erase(_animals.begin() + index);
 }
 void Zoo::delAll(const char class_name) {
 	if (class_name != 'L' && class_name != 'M' && class_name != 'S')
 		throw std::invalid_argument("Class type must be either L -> Lion, M -> Monkey, or S -> Shark.\n");
-	animals.erase(std::remove_if(animals.begin(), animals.end(), [class_name](const std::unique_ptr<Animal>& elem) { return elem->getInitial() == class_name; }), animals.end());
+	_animals.erase(std::remove_if(_animals.begin(), _animals.end(), [class_name](const std::unique_ptr<Animal>& elem) { return elem->getInitial() == class_name; }), _animals.end());
 }
 void Zoo::help() {
 	std::cout << "Welcome to the Zoo Management System! Here are the available commands:\n\n"
@@ -85,14 +96,14 @@ void Zoo::help() {
 		"    help - Prints this list of commands and parameters.\n"
 		"    exit - terminate the program\n" << std::endl;
 }
-void Zoo::step() { std::for_each(animals.begin(), animals.end(), [](const std::unique_ptr<Animal>& a) { a->step(); }); }
+void Zoo::step() { std::for_each(_animals.begin(), _animals.end(), [](const std::unique_ptr<Animal>& a) { a->step(); }); }
 
 
 void Zoo::printZooMap()
 {
 	std::cout << std::endl << "Zoo Map:\n";
 	int animals_index = 0;
-	int animals_size = animals.size();
+	int animals_size = _animals.size();
 
 	// Print the top border of the grid
 	std::cout << "+";
@@ -111,12 +122,12 @@ void Zoo::printZooMap()
 		{
 			Location tmp = Location(i, j);
 
-			if (animals_index < animals_size && animals[animals_index]->getLocation() == tmp)
+			if (animals_index < animals_size && _animals[animals_index]->getLocation() == tmp)
 			{
-				std::cout << animals[animals_index]->getInitial();
+				std::cout << _animals[animals_index]->getInitial();
 
 				// print only one animal per location, if other animals have same location skip them.
-				while (animals_index < animals_size && animals[animals_index]->getLocation() == tmp)
+				while (animals_index < animals_size && _animals[animals_index]->getLocation() == tmp)
 					++animals_index;
 			}
 			else
@@ -136,12 +147,12 @@ void Zoo::printZooMap()
 }
 void Zoo::printAnimalList()
 {
-	std::sort(animals.begin(), animals.end(), compareByLocation);
+	std::sort(_animals.begin(), _animals.end(), compareByLocation);
 	std::cout << "Animal list:\n";
-	for (size_t i = 0; i < animals.size(); i++)
+	for (size_t i = 0; i < _animals.size(); i++)
 	{
 		std::cout << i + 1 << ". ";
-		animals[i]->printDetails();
+		_animals[i]->printDetails();
 		std::cout << std::endl;
 	}
 }
@@ -151,7 +162,26 @@ bool Zoo::compareByLocation(const std::unique_ptr<Animal>& a1, const std::unique
 	Location l2 = a2->getLocation();
 	return l1 < l2;
 }
+void Zoo::enforceLegalBounds() {
+	for (int i = 0; i < _animals.size(); i++)
+	{
+		int row = _animals[i]->getLocation()._row;
+		int col = _animals[i]->getLocation()._column;
+		if (row < ROWS_LOWER_BOUNDRY)
+			row = ROWS_LOWER_BOUNDRY;
 
+		if (row > ROWS_UPPER_BOUNDRY)
+			row = ROWS_UPPER_BOUNDRY;
+
+		if (col < COLS_LOWER_BOUNDRY)
+			col = COLS_LOWER_BOUNDRY;
+
+		if (col > COLS_UPPER_BOUNDRY)
+			col = COLS_UPPER_BOUNDRY;
+
+		_animals[i]->setLocation(row, col);
+	}
+}
 void Zoo::run() {
 
 	std::vector<std::string> commands_list = { "stop","move","create","del","delAll",".","help","exit" };
@@ -162,12 +192,7 @@ void Zoo::run() {
 	char command_type;
 	int index;
 
-	help();
 
-	create("Lion", "Simba");
-	create("Lion", "Mufasa");
-	create("Monkey", "Rafiki");
-	create("Shark", "Jaws");
 
 	while (game_runing)
 	{
@@ -187,41 +212,28 @@ void Zoo::run() {
 		{
 			no_error = true;
 			command_type = command[0];
-			switch (command_type)
+			try
 			{
-			case 's': {		//stop
-
-				try
+				switch (command_type)
+				{
+				case 's':		//stop
 				{
 					index = std::stoi(command_and_args[1]) - 1;
 					stop(index);
+					break;
 				}
-				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
-				break;
-			}
-			case 'm':		//move
-			{
-				try
+				case 'm':		//move
 				{
 					index = std::stoi(command_and_args[1]) - 1;
 					move(index);
+					break;
 				}
-				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
-				break;
-			}
-			case 'c':		//create
-			{
-				try
+				case 'c':		//create
 				{
 					create(command_and_args[1], command_and_args[2]);
+					break;
 				}
-				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
-				break;
-			}
-			case 'd': // del, delAll
-			{
-
-				try
+				case 'd': // del, delAll
 				{
 					if (command.size() < 4)
 					{
@@ -231,37 +243,40 @@ void Zoo::run() {
 					else
 						delAll(command_and_args[1].at(0));
 
+					break;
 				}
-				catch (const std::exception& e) { std::cout << e.what(); no_error = false; }
-				break;
+				case 'h':		//help
+				{
+					help();
+					break;
+				}
+				case '.':		//step
+				{
+					step();
+					enforceLegalBounds();
+					break;
+				}
 
-			}
-			case 'h':		//help
-			{
-				help();
-				break;
-			}
-			case '.':		//step
-			{
-				step();
-				break;
-			}
+				case 'e':		//exit
+				{
+					game_runing = false;
+					break;
+				}
 
-			case 'e':		//exit
-			{
-				game_runing = false;
-				break;
+				}
 			}
-
+			//command is not valid
+			catch (const std::exception& e) {
+				std::cout << e.what(); no_error = false;
 			}
 		}
-		//command is not valid
 		else
 		{
 			std::cout << "Please use valid commands only!\nFor list of valid commands type 'help'\n";
 			no_error = false;
 		}
 	}
-	animals.clear();
+
+	_animals.clear();
 }
 

@@ -3,10 +3,6 @@
 #include <iostream>
 
 #define SHARK_STEP 5
-#define LOWER__ROW_BOUND 0
-#define UPPER__ROW_BOUND 19
-#define LOWER__COLUMN_BOUND 0
-#define UPPER__COLUMN_BOUND 39
 
 Shark::Shark(std::string shark_name, Location shark_location) :Animal(shark_name,shark_location) {
 	generate_direction();
@@ -23,7 +19,7 @@ char Shark::getInitial() const
 
 void Shark::move()
 {
-	if (is_freezed)
+	if (_is_freezed)
 	{
 		Animal::move();
 		generate_direction();
@@ -33,23 +29,23 @@ void Shark::move()
 void Shark::step()
 {
 
-	if (!is_freezed)
+	if (!_is_freezed)
 	{
-		switch (moving_direction)
+		switch (_moving_direction)
 		{
 		case 1: //vertical
 		{
-			location += {SHARK_STEP* vertical_direction, 0};
+			_location += {SHARK_STEP* _vertical_direction, 0};
 			break;
 		}
 		case 2: //horizontal
 		{
-			location += {0, SHARK_STEP* horizontal_direction};
+			_location += {0, SHARK_STEP* _horizontal_direction};
 			break;
 		}
 		case 3: //horizontal
 		{
-			location += {SHARK_STEP* diagonal_vertical_direction, SHARK_STEP* diagonal_horizontal_direction};
+			_location += {SHARK_STEP* _diagonal_vertical_direction, SHARK_STEP* _diagonal_horizontal_direction};
 			break;
 		}
 		default:
@@ -58,7 +54,6 @@ void Shark::step()
 		}
 		
 		}
-		enforceLegalBounds();
 
 	}
 }
@@ -69,24 +64,10 @@ void Shark::step()
 
 	void Shark::generate_direction()
 	{
-		horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
-		vertical_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
-		diagonal_vertical_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
-		diagonal_horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
-		moving_direction = RandomUtil::generateRandomValue(1, 3);
+		_horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
+		_vertical_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
+		_diagonal_vertical_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
+		_diagonal_horizontal_direction = RandomUtil::generateRandomValue(0, 1) == 0 ? -1 : 1;
+		_moving_direction = RandomUtil::generateRandomValue(1, 3);
 	}
 
-	void Shark::enforceLegalBounds()
-	{
-		if (location.row < LOWER__ROW_BOUND)
-			location.row = LOWER__ROW_BOUND;
-
-		if (location.row > UPPER__ROW_BOUND)
-			location.row = UPPER__ROW_BOUND;
-
-		if (location.column < LOWER__COLUMN_BOUND)
-			location.column = LOWER__COLUMN_BOUND;
-
-		if (location.column > UPPER__COLUMN_BOUND)
-			location.column = UPPER__COLUMN_BOUND;
-	}

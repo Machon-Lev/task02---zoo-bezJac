@@ -12,11 +12,11 @@
  */
 class Shark :public Animal {
 
-	int diagonal_vertical_direction;		// The current diagonal-vertical direction orientation of the shark (either -1, or 1).
-	int diagonal_horizontal_direction;		 // The current diagonal-horizontal direction orientation of the shark (either -1, or 1).
-	int horizontal_direction;			// The current horizontal direction orientation of the shark (either -1, or 1).
-	int vertical_direction;				// The current vertical direction orientation of the shark (either -1, or 1).
-	int moving_direction;				// The current  direction of the monkey (1 : vertical, 2 : horizontal, 3 : diagonal).
+	int _diagonal_vertical_direction;		// The current diagonal-vertical direction orientation of the shark (either -1, or 1).
+	int _diagonal_horizontal_direction;		 // The current diagonal-horizontal direction orientation of the shark (either -1, or 1).
+	int _horizontal_direction;			// The current horizontal direction orientation of the shark (either -1, or 1).
+	int _vertical_direction;				// The current vertical direction orientation of the shark (either -1, or 1).
+	int _moving_direction;				// The current  direction of the monkey (1 : vertical, 2 : horizontal, 3 : diagonal).
 public:
 	Shark(std::string shark_name, Location shark_location);
 	void printDetails() const override;

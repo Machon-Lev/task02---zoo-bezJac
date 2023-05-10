@@ -10,9 +10,9 @@
  */
 class Animal {
 protected:
-	std::string name;   // The name of the animal.
-	Location location;  // The current location of the animal.
-	bool is_freezed;    // A flag indicating whether the animal is frozen or not.
+	std::string _name;   // The name of the animal.
+	Location _location;  // The current location of the animal.
+	bool _is_freezed;    // A flag indicating whether the animal is frozen or not.
 
 	Animal();
 	Animal(std::string animal_name, Location animal_location);
@@ -67,6 +67,8 @@ public:
 	Returns the current location of the animal.
 	 */
 	Location getLocation() const;
+
+	void setLocation(const int row, const int col);
 };
 
 #endif // ANIMAL_H
